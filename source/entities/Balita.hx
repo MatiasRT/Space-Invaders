@@ -25,5 +25,12 @@ class Balita extends FlxSprite
 	{
 		super.update(elapsed);
 		
+		if (this.y > FlxG.height - height) 
+		{
+			this.kill();
+			//super.destroy();
+		}
+		
+		
 	}
 }

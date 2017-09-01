@@ -10,10 +10,11 @@ import flixel.FlxG;
  */
 class Jugador extends FlxSprite 
 {
-
+	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
+		
 		loadGraphic(AssetPaths.navenaranja__png);
 		//scale.set(300, 300);
 		updateHitbox();
@@ -21,7 +22,6 @@ class Jugador extends FlxSprite
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		
 		movimiento();
 		paredes();
 		disparo();
@@ -44,13 +44,12 @@ class Jugador extends FlxSprite
 			x = FlxG.width- width;
 	}
 	function disparo()
-	{
-		if (FlxG.keys.justPressed.SPACE) 
+	{		
+		if (FlxG.keys.justPressed.SPACE)
 		{
 			var disparito:Balita = new Balita();
 			disparito.x = this.x + ((width / 2)-6);
 			disparito.y = this.y + height / 2;
-			
 			FlxG.state.add(disparito);
 		}
 	}
