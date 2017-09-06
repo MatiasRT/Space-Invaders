@@ -9,10 +9,10 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 class Enemigos extends FlxTypedGroup 
 {
 
-	public function new(MaxSize:Int=0) 
+	public function new(MaxSize:Int=20) 
 	{
-		super(MaxSize);
 		
+		super(MaxSize);		
 	}
 	
 }

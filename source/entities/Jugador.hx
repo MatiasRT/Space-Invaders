@@ -10,6 +10,7 @@ import flixel.FlxG;
  */
 class Jugador extends FlxSprite 
 {
+	var disparito:Balita = new Balita();
 	
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
@@ -24,7 +25,15 @@ class Jugador extends FlxSprite
 		super.update(elapsed);
 		movimiento();
 		paredes();
-		disparo();
+		if (FlxG.keys.justPressed.SPACE && disparito.alive) 
+		{
+			if (disparito.alive) 
+			{
+				disparo(disparito);
+			}
+			
+		}
+		//disparo(disparito);
 	}
 	private function movimiento()
 	{
@@ -41,16 +50,12 @@ class Jugador extends FlxSprite
 		if (x < 0)
 			x = 0;
 		if (x > (FlxG.width - width))
-			x = FlxG.width- width;
+			x = FlxG.width - width;
 	}
-	function disparo()
+	function disparo(disparito:Balita)
 	{		
-		if (FlxG.keys.justPressed.SPACE)
-		{
-			var disparito:Balita = new Balita();
 			disparito.x = this.x + ((width / 2)-6);
 			disparito.y = this.y + height / 2;
 			FlxG.state.add(disparito);
-		}
 	}
 }

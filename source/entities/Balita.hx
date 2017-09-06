@@ -1,5 +1,6 @@
 package entities;
 
+import entities.Enemigo;
 import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxG;
@@ -24,13 +25,18 @@ class Balita extends FlxSprite
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		
+		colisionEnemigo();
 		if (this.y > FlxG.height - height) 
 		{
 			this.kill();
 			//super.destroy();
 		}
-		
-		
+	}
+	function colisionEnemigo()
+	{
+		/*if (FlxG.collide(this,) ) 
+		{
+			Enemigo.kill;
+		}*/
 	}
 }
