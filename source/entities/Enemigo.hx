@@ -11,13 +11,17 @@ import flixel.util.FlxColor;
  */
 class Enemigo extends FlxSprite 
 {
-
+	public var xOriginal:Float;
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
-		/*loadGraphic(AssetPaths.Invader2__png);*/
-		makeGraphic(20, 20, FlxColor.WHITE); 
+		loadGraphic(AssetPaths.Invader2__png);
+		
+		/*makeGraphic(20, 20, FlxColor.WHITE); */
 		velocity.x = 100;
+		xOriginal = this.x;
+		
+		
 	}
 	override public function update(elapsed:Float)
 	{
@@ -29,7 +33,19 @@ class Enemigo extends FlxSprite
 	}
 		function movimiento()
 	{	
-		if (x < 0)
+		
+		if (x < FlxG.width -FlxG.width)
+		{
+			x++;
+		}
+		
+		if (x > FlxG.width + FlxG.width) 
+		{
+			/*x = xOriginal + 8;*/
+			velocity.x = -velocity.x;
+		} 
+		
+		/*if (x < 0)
 		x = 0;
 		if (x > FlxG.width - width) 
 			y = y + 50;
@@ -42,14 +58,14 @@ class Enemigo extends FlxSprite
 			x = x +5;
 			velocity.x = 100;
 		}
-		/*if (x< FlxG.width - width) 
+		if (x< FlxG.width - width) 
 			y = y + 50;*/
 	}
 		function paredes()
 	{
 		if (x < 0)
-			x = 0;
+			velocity.x = -velocity.x;
 		if (x > (FlxG.width - width))
-			x = FlxG.width - width;
+			velocity.x = -velocity.x;		
 	}
 }

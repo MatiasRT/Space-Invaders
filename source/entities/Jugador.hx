@@ -1,5 +1,6 @@
 package entities;
 
+import entities.Balita;
 import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxG;
@@ -8,42 +9,47 @@ import flixel.FlxG;
  * ...
  * @author ...
  */
-class Jugador extends FlxSprite 
+class Jugador extends FlxSprite
 {
-	var disparito:Balita = new Balita();
-	
-	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
+	public var disparito(get, null):Balita;
+
+	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset)
 	{
 		super(X, Y, SimpleGraphic);
 		
+
+		/*FlxG.state.add(disparito);
+		disparito.kill;*/
 		loadGraphic(AssetPaths.navenaranja__png);
+
+		disparito = new Balita(x, y, AssetPaths.Disparito__png);
+		disparito.kill();
+		FlxG.state.add(disparito);
+		
+
 		//scale.set(300, 300);
 		updateHitbox();
 	}
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		if (disparito.y < 0)
+		{
+			disparito.kill(); 
+		}
 		movimiento();
 		paredes();
-		if (FlxG.keys.justPressed.SPACE && disparito.alive) 
-		{
-			if (disparito.alive) 
-			{
-				disparo(disparito);
-			}
-			
-		}
-		//disparo(disparito);
+		disparo();
 	}
 	private function movimiento()
 	{
-		if (FlxG.keys.pressed.RIGHT) 
+		if (FlxG.keys.pressed.RIGHT)
 		{
 			x += 3 * 60 * FlxG.elapsed;
 		}
-		if (FlxG.keys.pressed.LEFT) 
+		if (FlxG.keys.pressed.LEFT)
 			x -= 3 * 60 * FlxG.elapsed;
-		
+
 	}
 	private function paredes()
 	{
@@ -51,11 +57,20 @@ class Jugador extends FlxSprite
 			x = 0;
 		if (x > (FlxG.width - width))
 			x = FlxG.width - width;
+
 	}
-	function disparo(disparito:Balita)
-	{		
-			disparito.x = this.x + ((width / 2)-6);
-			disparito.y = this.y + height / 2;
-			FlxG.state.add(disparito);
+	function disparo()
+	{
+		if (FlxG.keys.justPressed.SPACE && disparito.alive==false)
+		{
+			
+			disparito.reset(x - 2 + width / 2 , y + height / 2);
+			disparito.velocity.y = (Balita.normalVel) *-1;
+		}
+	}
+
+	function get_disparito():Balita
+	{
+		return disparito;
 	}
 }
