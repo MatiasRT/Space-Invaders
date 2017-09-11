@@ -15,10 +15,10 @@ class PlayState extends FlxState
 	private var nave:Jugador;
 	private var enemy:Enemigo;
 	private var grupoEnemigo:FlxTypedGroup<Enemigo>;
+	
 	override public function create():Void
 	{
 		super.create();
-		var i : Int = 0;
 		var comienzoDibujoX : Int = 50;
 		var comienzoDibujoY : Int = 0;
 		FlxG.camera.bgColor = FlxColor.BLACK;
@@ -31,13 +31,37 @@ class PlayState extends FlxState
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY));
 			
 			comienzoDibujoX += 35;
-			}
-		//grupoEnemigo.add(new Enemigo(50, 50));
-		
+		}
+		comienzoDibujoX = 50;
+		for (i in 0...8) 
+		{
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 30));
+			
+			comienzoDibujoX += 35;
+		}
+		comienzoDibujoX = 50;
+		for (i in 0...8) 
+		{
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 60));
+			
+			comienzoDibujoX += 35;
+		}
+		comienzoDibujoX = 50;
+		for (i in 0...8) 
+		{
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 90));
+			
+			comienzoDibujoX += 35;
+		}
+		comienzoDibujoX = 50;
+		for (i in 0...8) 
+		{
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 120));
+			
+			comienzoDibujoX += 35;
+		}
 		add(grupoEnemigo);
 		add(nave);
-		//add(enemy);
-		
 	}
 
 	override public function update(elapsed:Float):Void
@@ -47,6 +71,7 @@ class PlayState extends FlxState
 		//colisionBalaEnemigo();
 		colisionBalaGrupo();
 	}
+	
 	function colisionEnemigoNave()
 	{
 		if (FlxG.collide(nave,enemy)) 
@@ -54,6 +79,7 @@ class PlayState extends FlxState
 			nave.kill();
 		}
 	}
+	
 	/*function colisionBalaEnemigo()
 	{
 		if (FlxG.collide( nave.disparito,enemy)) 
@@ -62,12 +88,16 @@ class PlayState extends FlxState
 			nave.disparito.kill();
 		}
 	}*/
+	
 	function colisionBalaGrupo()
 	{
-		if (FlxG.collide( nave.disparito,grupoEnemigo)) 
+		for (i in 0...grupoEnemigo.members.length) 
 		{
-			grupoEnemigo.kill();
-			nave.disparito.kill();
+			if (FlxG.overlap(grupoEnemigo.members[i], nave.disparito))
+			{
+				grupoEnemigo.remove(grupoEnemigo.members[i], true);
+				nave.disparito.kill();
+			}
 		}
 	}
 }

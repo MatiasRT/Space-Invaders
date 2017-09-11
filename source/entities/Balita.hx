@@ -17,12 +17,11 @@ class Balita extends FlxSprite
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
-		
-		//makeGraphic(50, 50, FlxColor.WHITE);
 		loadGraphic(AssetPaths.Disparito__png);
 		scale.set(6,6);
 		velocity.y = -800;
 	}
+	
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);		
