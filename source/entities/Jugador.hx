@@ -4,6 +4,7 @@ import entities.Balita;
 import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxG;
+import entities.BalaEnemiga;
 
 /**
  * ...
@@ -16,11 +17,15 @@ class Jugador extends FlxSprite
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset)
 	{
 		super(X, Y, SimpleGraphic);
-		loadGraphic(AssetPaths.navenaranja__png);
+		
+		loadGraphic(AssetPaths.naveloidenaranjoidexd__png);
 		disparito = new Balita(x, y, AssetPaths.Disparito__png);
 		disparito.kill();
 		FlxG.state.add(disparito);
 		updateHitbox();
+		
+		
+		
 	}
 	
 	override public function update(elapsed:Float)
@@ -57,12 +62,15 @@ class Jugador extends FlxSprite
 	{
 		if (FlxG.keys.justPressed.SPACE && disparito.alive==false)
 		{
+			//FlxG.sound.play(AssetPaths.Pium__wav);
 			disparito.reset(x - 2 + width / 2 , y + height / 2);
 			disparito.velocity.y = (Balita.normalVel) *-1;
+			
+			
 		}
 	}
 
-	function get_disparito():Balita
+	public function get_disparito():Balita
 	{
 		return disparito;
 	}

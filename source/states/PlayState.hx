@@ -1,5 +1,6 @@
 package states;
 
+import entities.BalaEnemiga;
 import entities.Balita;
 import entities.Jugador;
 import entities.Enemigo;
@@ -9,22 +10,41 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import lime.graphics.console.RenderState.BlendState;
+import flixel.math.FlxRandom;
+import neko.Random;
 
 class PlayState extends FlxState
 {
 	private var nave:Jugador;
 	private var enemy:Enemigo;
 	private var grupoEnemigo:FlxTypedGroup<Enemigo>;
-	
+	private var balaenemiga(get, null):BalaEnemiga;
+	private var r:Random;
+	private var contadorDisparoEnemigo:Float = 3;
+	private var EnemigoPuedeDisparar:Bool = true;
+
 	override public function create():Void
 	{
 		super.create();
 		var comienzoDibujoX : Int = 50;
-		var comienzoDibujoY : Int = 0;
+		var comienzoDibujoY : Int = 10;
+		
+		
 		FlxG.camera.bgColor = FlxColor.BLACK;
-		nave = new Jugador(310, 400);
+		
+		
+		balaenemiga = new BalaEnemiga(50 , 50);
+		balaenemiga.loadGraphic(AssetPaths.Disparito__png);
+		balaenemiga.velocity.y = 600;
+		balaenemiga.kill();
+		
+		
+		nave = new Jugador(310, 450);
 		grupoEnemigo = new FlxTypedGroup<Enemigo>();
 		enemy = new Enemigo(25, 25);
+		
+		
 		
 		for (i in 0...8) 
 		{
@@ -60,6 +80,9 @@ class PlayState extends FlxState
 			
 			comienzoDibujoX += 35;
 		}
+		
+		//var r:Int = (grupoEnemigo.length /2);
+		add(balaenemiga);
 		add(grupoEnemigo);
 		add(nave);
 	}
@@ -70,6 +93,11 @@ class PlayState extends FlxState
 		colisionEnemigoNave();
 		//colisionBalaEnemigo();
 		colisionBalaGrupo();
+		//colisiongrupo();
+		TiroRandomXD();
+		//colisionbalas();
+		colisionBalaEnemigaNave();
+		fueraBalas();
 	}
 	
 	function colisionEnemigoNave()
@@ -79,16 +107,7 @@ class PlayState extends FlxState
 			nave.kill();
 		}
 	}
-	
-	/*function colisionBalaEnemigo()
-	{
-		if (FlxG.collide( nave.disparito,enemy)) 
-		{
-			enemy.kill();
-			nave.disparito.kill();
-		}
-	}*/
-	
+		
 	function colisionBalaGrupo()
 	{
 		for (i in 0...grupoEnemigo.members.length) 
@@ -100,4 +119,60 @@ class PlayState extends FlxState
 			}
 		}
 	}
+	
+	function TiroRandomXD()
+	{
+		contadorDisparoEnemigo += FlxG.elapsed;
+		for (enemy in grupoEnemigo)
+		{
+			if (grupoEnemigo.getRandom() == enemy)
+			{			
+				if (contadorDisparoEnemigo >= 2 && EnemigoPuedeDisparar == true)
+				{	
+					balaenemiga.alive == true;
+					balaenemiga.reset(enemy.x, enemy.y);
+					/*balaenemiga.x = enemy.x;
+					balaenemiga.y = enemy.y;*/
+					contadorDisparoEnemigo = 0;
+				}
+			}
+		}
+		balaenemiga.velocity.y = (BalaEnemiga.normalVel);
+	}
+	
+	function get_balaenemiga():BalaEnemiga 
+	{
+		return balaenemiga;
+	}
+	function colisionBalaEnemigaNave()
+	{
+		if (FlxG.collide(nave , balaenemiga)) 
+		{
+			nave.kill();
+			balaenemiga.kill();
+		}
+	}
+	function fueraBalas()
+	{
+		if (balaenemiga.y > FlxG.height)
+		{
+			balaenemiga.kill(); 
+		}
+	}
+	/*function colisiongrupo()
+	{
+		if (grupoEnemigo.members. < 0)
+			velocity.x = -velocity.x;
+		if (x > (FlxG.width - width))
+			velocity.x = -velocity.x;
+	}*/
+	
+	/*function colisionbalas()
+	{
+		if (FlxG.collide(balaenemiga,)) 
+		{
+			balaenemiga.kill();
+			
+		}
+	}*/
 }
