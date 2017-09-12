@@ -98,6 +98,7 @@ class PlayState extends FlxState
 		//colisionbalas();
 		colisionBalaEnemigaNave();
 		fueraBalas();
+		//paredesEnemigos();
 	}
 	
 	function colisionEnemigoNave()
@@ -159,12 +160,32 @@ class PlayState extends FlxState
 			balaenemiga.kill(); 
 		}
 	}
+	
+	function paredesEnemigos()
+	{
+		/*for (enemy in grupoEnemigo) 
+		{
+			if (enemy.x < 0)
+				for (enemy in grupoEnemigo) 
+				{
+					enemy.velocity.x = -enemy.velocity.x;
+				}
+			
+			if (enemy.x > (FlxG.width))
+				for (enemy in grupoEnemigo) 
+				{                            
+					enemy.velocity.x = -enemy.velocity.x;
+				}
+			
+		}*/
+		
+	}
 	/*function colisiongrupo()
 	{
-		if (grupoEnemigo.members. < 0)
-			velocity.x = -velocity.x;
-		if (x > (FlxG.width - width))
-			velocity.x = -velocity.x;
+		if (FlxG.collide(Any. 
+		{
+			enemy.velocity.x = -velocity.x;
+		}	
 	}*/
 	
 	/*function colisionbalas()

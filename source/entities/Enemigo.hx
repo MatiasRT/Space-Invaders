@@ -42,10 +42,10 @@ class Enemigo extends FlxSprite
 			x++;
 		}
 		
-		if (x > FlxG.width + FlxG.width) 
+		/*if (x > FlxG.width + FlxG.width) 
 		{
 			velocity.x = -velocity.x;
-		} 
+		} */
 	}
 	
 	function paredes()
