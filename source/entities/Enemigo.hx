@@ -20,9 +20,8 @@ class Enemigo extends FlxSprite
 	{
 		super(X, Y, SimpleGraphic);
 		loadGraphic(AssetPaths.invader2pekenioxd__png);
-		velocity.x = 100;
+		velocity.x = 90;
 		xOriginal = this.x;
-		
 	}
 	
 	override public function update(elapsed:Float)
@@ -31,29 +30,28 @@ class Enemigo extends FlxSprite
 		updateHitbox();
 		movimiento();
 		paredes();
-		//disparo();
 	}
 	
 	function movimiento()
 	{	
-		
 		if (x < FlxG.width -FlxG.width)
 		{
 			x++;
 		}
-		
-		/*if (x > FlxG.width + FlxG.width) 
-		{
-			velocity.x = -velocity.x;
-		} */
 	}
 	
 	function paredes()
 	{
 		if (x < 0)
+		{
 			velocity.x = -velocity.x;
+			y += 30;
+		}
+		
 		if (x > (FlxG.width - width))
-			velocity.x = -velocity.x;		
+		{	velocity.x = -velocity.x;	
+			y += 30;
+		}
 	}
 	
 	//function disparo()					// Por Mati

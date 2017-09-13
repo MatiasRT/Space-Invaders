@@ -2,6 +2,7 @@ package states;
 
 import entities.BalaEnemiga;
 import entities.Balita;
+import entities.Estructuras;
 import entities.Jugador;
 import entities.Enemigo;
 import flixel.FlxState;
@@ -23,6 +24,7 @@ class PlayState extends FlxState
 	private var r:Random;
 	private var contadorDisparoEnemigo:Float = 3;
 	private var EnemigoPuedeDisparar:Bool = true;
+	private var estructuritas:FlxTypedGroup<Estructuras>;
 
 	override public function create():Void
 	{
@@ -43,9 +45,10 @@ class PlayState extends FlxState
 		nave = new Jugador(310, 450);
 		grupoEnemigo = new FlxTypedGroup<Enemigo>();
 		enemy = new Enemigo(25, 25);
+		estructuritas = new FlxTypedGroup<Estructuras>();
+		//estructuritas.add(new Estructuras(200, 200));
 		
-		
-		
+		//Comienzo enemigos
 		for (i in 0...8) 
 		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY));
@@ -80,11 +83,37 @@ class PlayState extends FlxState
 			
 			comienzoDibujoX += 35;
 		}
+		comienzoDibujoX = 50;
+		
+		// Cominezo estructuras
+		for (i in 0...10) 
+		{
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 380));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 370));
+			comienzoDibujoX += 10;
+		}
+		comienzoDibujoX += 120;
+		for (i in 0...10) 
+		{
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 370));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 380));
+			comienzoDibujoX += 10;
+			
+		}
+		comienzoDibujoX += 120;
+		for (i in 0...10) 
+		{
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 370));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 380));
+			comienzoDibujoX += 10;
+			
+		}
 		
 		//var r:Int = (grupoEnemigo.length /2);
 		add(balaenemiga);
 		add(grupoEnemigo);
 		add(nave);
+		add(estructuritas);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -99,6 +128,10 @@ class PlayState extends FlxState
 		colisionBalaEnemigaNave();
 		fueraBalas();
 		//paredesEnemigos();
+		colisionBalaEnemigaEstructura();
+		colisionBalitaEstructura();
+		//bajaWacho();
+		colisionEnemigoEstructura();
 	}
 	
 	function colisionEnemigoNave()
@@ -108,7 +141,7 @@ class PlayState extends FlxState
 			nave.kill();
 		}
 	}
-		
+
 	function colisionBalaGrupo()
 	{
 		for (i in 0...grupoEnemigo.members.length) 
@@ -145,19 +178,57 @@ class PlayState extends FlxState
 	{
 		return balaenemiga;
 	}
+	
 	function colisionBalaEnemigaNave()
 	{
-		if (FlxG.collide(nave , balaenemiga)) 
+		if (FlxG.collide(nave, balaenemiga)) 
 		{
 			nave.kill();
 			balaenemiga.kill();
 		}
 	}
+	
 	function fueraBalas()
 	{
 		if (balaenemiga.y > FlxG.height)
 		{
 			balaenemiga.kill(); 
+		}
+	}
+	
+	function colisionBalaEnemigaEstructura()
+	{
+		for (i in 0...estructuritas.members.length) 
+		{
+			if (FlxG.overlap(balaenemiga, estructuritas.members[i])) 
+			{
+				balaenemiga.kill();
+				estructuritas.remove(estructuritas.members[i], true);
+			}
+		}
+	}
+	
+	function colisionBalitaEstructura()
+	{
+		for (i in 0...estructuritas.members.length) 
+		{
+			if (FlxG.overlap(nave.disparito, estructuritas.members[i])) 
+			{
+				nave.disparito.kill();
+				estructuritas.remove(estructuritas.members[i], true);
+			}
+		}
+	}
+	
+	function colisionEnemigoEstructura()
+	{
+		for (i in 0...estructuritas.members.length) 
+		{
+			if (FlxG.overlap(grupoEnemigo, estructuritas.members[i])) 
+			{
+				estructuritas.remove(estructuritas.members[i], true);
+				
+			}
 		}
 	}
 	
@@ -196,4 +267,26 @@ class PlayState extends FlxState
 			
 		}
 	}*/
+	
+	//function bajaWacho()
+	//{
+		//if (enemy.x < 0) 
+		//{
+			////enemy.y += 30;
+			//for (i in 0...grupoEnemigo.members.length) 
+			//{
+				//grupoEnemigo.members[i].y += 30;
+				////grupoEnemigo.members[1].velocity.x = -grupoEnemigo.members[1].velocity.x;
+				//
+			//}
+		//}
+		////if (enemy.x > (FlxG.width - enemy.width))
+		////{
+			////for (i in 0...grupoEnemigo.members.length) 
+			////{
+				////grupoEnemigo.members[i].y += 30;
+				////
+			////}
+		////}
+	//}
 }
