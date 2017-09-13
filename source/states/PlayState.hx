@@ -5,6 +5,7 @@ import entities.Balita;
 import entities.Estructuras;
 import entities.Jugador;
 import entities.Enemigo;
+import entities.Ovni;
 import flixel.FlxState;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -25,6 +26,7 @@ class PlayState extends FlxState
 	private var contadorDisparoEnemigo:Float = 3;
 	private var EnemigoPuedeDisparar:Bool = true;
 	private var estructuritas:FlxTypedGroup<Estructuras>;
+	private var ovnicito:Ovni;
 
 	override public function create():Void
 	{
@@ -46,7 +48,7 @@ class PlayState extends FlxState
 		grupoEnemigo = new FlxTypedGroup<Enemigo>();
 		enemy = new Enemigo(25, 25);
 		estructuritas = new FlxTypedGroup<Estructuras>();
-		//estructuritas.add(new Estructuras(200, 200));
+		ovnicito = new Ovni(0,200);
 		
 		//Comienzo enemigos
 		for (i in 0...8) 
@@ -114,6 +116,7 @@ class PlayState extends FlxState
 		add(grupoEnemigo);
 		add(nave);
 		add(estructuritas);
+		add(ovnicito);
 	}
 
 	override public function update(elapsed:Float):Void
@@ -132,6 +135,7 @@ class PlayState extends FlxState
 		colisionBalitaEstructura();
 		//bajaWacho();
 		colisionEnemigoEstructura();
+		colisionBalitaOvni();
 	}
 	
 	function colisionEnemigoNave()
@@ -232,6 +236,18 @@ class PlayState extends FlxState
 		}
 	}
 	
+	function colisionBalitaOvni()
+	{
+		if (FlxG.overlap(nave.disparito, ovnicito)) 
+		{
+			ovnicito.kill();
+			nave.disparito.kill();
+		}
+	}
+	
+	
+	
+	//Funciones que no funcan - no sirven
 	function paredesEnemigos()
 	{
 		/*for (enemy in grupoEnemigo) 
