@@ -19,12 +19,13 @@ class Balita extends FlxSprite
 		super(X, Y, SimpleGraphic);
 		
 		loadGraphic(AssetPaths.Disparito__png);
-		scale.set(6,6);
+		//scale.set(6,6);
 		velocity.y = -800;
 	}
 	
 	override public function update(elapsed:Float)
 	{
-		super.update(elapsed);		
+		super.update(elapsed);
+		trace(this.alpha + " " + this.color);
 	}
 }

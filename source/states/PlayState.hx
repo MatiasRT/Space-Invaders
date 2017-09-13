@@ -27,12 +27,16 @@ class PlayState extends FlxState
 	private var EnemigoPuedeDisparar:Bool = true;
 	private var estructuritas:FlxTypedGroup<Estructuras>;
 	private var ovnicito:Ovni;
+	private var ganaste:FlxText;
+	private var perdiste:FlxText;
 
 	override public function create():Void
 	{
 		super.create();
 		var comienzoDibujoX : Int = 50;
 		var comienzoDibujoY : Int = 10;
+		perdiste = new FlxText(FlxG.width / 2);
+		perdiste.text = "Perdiste wey";
 		
 		
 		FlxG.camera.bgColor = FlxColor.BLACK;
@@ -48,7 +52,8 @@ class PlayState extends FlxState
 		grupoEnemigo = new FlxTypedGroup<Enemigo>();
 		enemy = new Enemigo(25, 25);
 		estructuritas = new FlxTypedGroup<Estructuras>();
-		ovnicito = new Ovni(0,200);
+		ovnicito = new Ovni();
+		ovnicito.kill();
 		
 		//Comienzo enemigos
 		for (i in 0...8) 
@@ -127,7 +132,7 @@ class PlayState extends FlxState
 		colisionBalaGrupo();
 		//colisiongrupo();
 		TiroRandomXD();
-		//colisionbalas();
+		colisionbalas();
 		colisionBalaEnemigaNave();
 		fueraBalas();
 		//paredesEnemigos();
@@ -136,6 +141,7 @@ class PlayState extends FlxState
 		//bajaWacho();
 		colisionEnemigoEstructura();
 		colisionBalitaOvni();
+		OvniRandomXD();
 	}
 	
 	function colisionEnemigoNave()
@@ -176,6 +182,13 @@ class PlayState extends FlxState
 			}
 		}
 		balaenemiga.velocity.y = (BalaEnemiga.normalVel);
+	}
+	
+	function OvniRandomXD()
+	{
+		ovnicito.alive == true;
+		ovnicito.reset(0, FlxG.height / 3);
+		ovnicito.velocity.x = 300;
 	}
 	
 	function get_balaenemiga():BalaEnemiga 
@@ -245,6 +258,15 @@ class PlayState extends FlxState
 		}
 	}
 	
+	function colisionbalas()
+	{
+		if (FlxG.collide(balaenemiga, nave.disparito)) 
+		{
+			balaenemiga.kill();
+			nave.disparito.kill();
+		}
+	}
+	
 	
 	
 	//Funciones que no funcan - no sirven
@@ -275,34 +297,42 @@ class PlayState extends FlxState
 		}	
 	}*/
 	
-	/*function colisionbalas()
+	
+
+	/*function bajaWacho()
 	{
-		if (FlxG.collide(balaenemiga,)) 
+		for (i in 0...grupoEnemigo.members.length) 
 		{
-			balaenemiga.kill();
-			
+			if (grupoEnemigo.members[i].x < 0)			
+			{
+				grupoEnemigo.members[i].y += 30;
+				grupoEnemigo.members[i].velocity.x = -(grupoEnemigo.members[i].velocity.x);
+			}
+			if (grupoEnemigo.members[i].x > (FlxG.width - grupoEnemigo.members[i].width))
+			{
+				grupoEnemigo.members[i].velocity.x = -(grupoEnemigo.members[i].velocity.x);
+				grupoEnemigo.members[i].y += 30;
+				
+			}
+		}
+										DE ACA PABAJO NO XD
+		/*if (enemy.x < 0) 
+		{
+			//enemy.y += 30;
+			for (i in 0...grupoEnemigo.members.length) 
+			{
+				grupoEnemigo.members[i].y += 30;
+				//grupoEnemigo.members[1].velocity.x = -grupoEnemigo.members[1].velocity.x;
+				
+			}
+		}
+		if (enemy.x > (FlxG.width - enemy.width))
+		{
+			for (i in 0...grupoEnemigo.members.length) 
+			{
+				grupoEnemigo.members[i].y += 30;
+				//grupoEnemigo.members[1].velocity.x = -grupoEnemigo.members[1].velocity.x;
+			}
 		}
 	}*/
-	
-	//function bajaWacho()
-	//{
-		//if (enemy.x < 0) 
-		//{
-			////enemy.y += 30;
-			//for (i in 0...grupoEnemigo.members.length) 
-			//{
-				//grupoEnemigo.members[i].y += 30;
-				////grupoEnemigo.members[1].velocity.x = -grupoEnemigo.members[1].velocity.x;
-				//
-			//}
-		//}
-		////if (enemy.x > (FlxG.width - enemy.width))
-		////{
-			////for (i in 0...grupoEnemigo.members.length) 
-			////{
-				////grupoEnemigo.members[i].y += 30;
-				////
-			////}
-		////}
-	//}
 }
