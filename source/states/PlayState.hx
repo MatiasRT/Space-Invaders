@@ -11,6 +11,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import lime.graphics.console.RenderState.BlendState;
 import flixel.math.FlxRandom;
@@ -25,6 +26,8 @@ class PlayState extends FlxState
 	private var r:Random;
 	private var contadorDisparoEnemigo:Float = 3;
 	private var EnemigoPuedeDisparar:Bool = true;
+	private var contadorOvni:Float = 8;
+	private var spawnOvni:Bool = true;
 	private var estructuritas:FlxTypedGroup<Estructuras>;
 	private var ovnicito:Ovni;
 	private var ganaste:FlxText;
@@ -50,10 +53,9 @@ class PlayState extends FlxState
 		
 		nave = new Jugador(310, 450);
 		grupoEnemigo = new FlxTypedGroup<Enemigo>();
-		enemy = new Enemigo(25, 25);
+		enemy = new Enemigo(50, 50);
 		estructuritas = new FlxTypedGroup<Estructuras>();
-		ovnicito = new Ovni();
-		ovnicito.kill();
+		ovnicito = new Ovni() ;
 		
 		//Comienzo enemigos
 		for (i in 0...8) 
@@ -142,6 +144,7 @@ class PlayState extends FlxState
 		colisionEnemigoEstructura();
 		colisionBalitaOvni();
 		OvniRandomXD();
+		paredesOvni();
 	}
 	
 	function colisionEnemigoNave()
@@ -160,6 +163,7 @@ class PlayState extends FlxState
 			{
 				grupoEnemigo.remove(grupoEnemigo.members[i], true);
 				nave.disparito.kill();
+				FlxG.sound.play(AssetPaths.muerteenemigo__wav);
 			}
 		}
 	}
@@ -186,9 +190,26 @@ class PlayState extends FlxState
 	
 	function OvniRandomXD()
 	{
-		ovnicito.alive == true;
-		ovnicito.reset(0, FlxG.height / 3);
-		ovnicito.velocity.x = 300;
+		trace(contadorOvni);
+		contadorOvni += FlxG.elapsed;
+		if (spawnOvni == true && contadorOvni >= 20)
+		{
+			ovnicito = new Ovni(FlxG.width + ovnicito.width, FlxG.height/3);
+			//ovnicito.y = 50;
+			spawnOvni = false;
+			contadorOvni = 0;
+			
+		}
+		
+		add(ovnicito);
+	}
+	function paredesOvni()
+	{
+		if (ovnicito.x > FlxG.width)
+		{
+			ovnicito.kill(); 
+			spawnOvni = true;
+		}
 	}
 	
 	function get_balaenemiga():BalaEnemiga 
@@ -221,6 +242,8 @@ class PlayState extends FlxState
 			{
 				balaenemiga.kill();
 				estructuritas.remove(estructuritas.members[i], true);
+				//FlxG.sound.play(AssetPaths.bloque__ogg);
+				FlxG.sound.play(AssetPaths.bloque__wav);
 			}
 		}
 	}
@@ -233,6 +256,8 @@ class PlayState extends FlxState
 			{
 				nave.disparito.kill();
 				estructuritas.remove(estructuritas.members[i], true);
+				//FlxG.sound.play(AssetPaths.bloque__ogg);
+				FlxG.sound.play(AssetPaths.bloque__wav);
 			}
 		}
 	}
@@ -245,6 +270,7 @@ class PlayState extends FlxState
 			{
 				estructuritas.remove(estructuritas.members[i], true);
 				
+				
 			}
 		}
 	}
@@ -255,6 +281,7 @@ class PlayState extends FlxState
 		{
 			ovnicito.kill();
 			nave.disparito.kill();
+			spawnOvni = true;
 		}
 	}
 	

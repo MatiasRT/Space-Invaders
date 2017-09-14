@@ -18,7 +18,7 @@ class Ovni extends FlxSprite
 		super(X, Y, SimpleGraphic);
 		makeGraphic(15, 15, FlxColor.WHITE);
 		//loadGraphic(AssetPaths.ovni__png);
-		velocity.x = 70;
+		velocity.x = 90;
 		xOriginal = this.x;
 	}
 	override public function update(elapsed:Float)

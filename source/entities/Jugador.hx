@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxG;
 import entities.BalaEnemiga;
+import flixel.system.FlxSound;
 
 /**
  * ...
@@ -62,11 +63,9 @@ class Jugador extends FlxSprite
 	{
 		if (FlxG.keys.justPressed.SPACE && disparito.alive==false)
 		{
-			//FlxG.sound.play(AssetPaths.Pium__wav);
 			disparito.reset(x - 2 + width / 2 , y + height / 2);
 			disparito.velocity.y = (Balita.normalVel) *-1;
-			
-			
+			FlxG.sound.play(AssetPaths.Pium__wav);
 		}
 	}
 

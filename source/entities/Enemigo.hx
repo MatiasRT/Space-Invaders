@@ -20,7 +20,7 @@ class Enemigo extends FlxSprite
 	{
 		super(X, Y, SimpleGraphic);
 		loadGraphic(AssetPaths.invader2pekenioxd__png);
-		velocity.x = 90;
+		velocity.x = 70;
 		xOriginal = this.x;
 	}
 	
