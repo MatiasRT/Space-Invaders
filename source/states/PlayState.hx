@@ -11,7 +11,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
+//import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import lime.graphics.console.RenderState.BlendState;
 import flixel.math.FlxRandom;
@@ -36,7 +36,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		var comienzoDibujoX : Int = 50;
+		var comienzoDibujoX : Int = 30;
 		var comienzoDibujoY : Int = 10;
 		perdiste = new FlxText(FlxG.width / 2);
 		perdiste.text = "Perdiste wey";
@@ -51,7 +51,7 @@ class PlayState extends FlxState
 		balaenemiga.kill();
 		
 		
-		nave = new Jugador(310, 450);
+		nave = new Jugador(215, 390);
 		grupoEnemigo = new FlxTypedGroup<Enemigo>();
 		enemy = new Enemigo(50, 50);
 		estructuritas = new FlxTypedGroup<Estructuras>();
@@ -64,56 +64,56 @@ class PlayState extends FlxState
 			
 			comienzoDibujoX += 35;
 		}
-		comienzoDibujoX = 50;
+		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 30));
 			
 			comienzoDibujoX += 35;
 		}
-		comienzoDibujoX = 50;
+		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 60));
 			
 			comienzoDibujoX += 35;
 		}
-		comienzoDibujoX = 50;
+		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 90));
 			
 			comienzoDibujoX += 35;
 		}
-		comienzoDibujoX = 50;
+		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 120));
 			
 			comienzoDibujoX += 35;
 		}
-		comienzoDibujoX = 50;
+		comienzoDibujoX = 30;
 		
 		// Cominezo estructuras
 		for (i in 0...10) 
 		{
-			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 380));
-			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 370));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 355));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 345));
 			comienzoDibujoX += 10;
 		}
-		comienzoDibujoX += 120;
+		comienzoDibujoX += 58;
 		for (i in 0...10) 
 		{
-			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 370));
-			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 380));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 355));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 345));
 			comienzoDibujoX += 10;
 			
 		}
-		comienzoDibujoX += 120;
+		comienzoDibujoX += 58;
 		for (i in 0...10) 
 		{
-			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 370));
-			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 380));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 355));
+			estructuritas.add(new Estructuras(comienzoDibujoX, comienzoDibujoY + 345));
 			comienzoDibujoX += 10;
 			
 		}
@@ -163,7 +163,7 @@ class PlayState extends FlxState
 			{
 				grupoEnemigo.remove(grupoEnemigo.members[i], true);
 				nave.disparito.kill();
-				FlxG.sound.play(AssetPaths.muerteenemigo__wav);
+				//FlxG.sound.play(AssetPaths.muerteenemigo__wav);
 			}
 		}
 	}
@@ -203,6 +203,7 @@ class PlayState extends FlxState
 		
 		add(ovnicito);
 	}
+	
 	function paredesOvni()
 	{
 		if (ovnicito.x > FlxG.width)
@@ -243,7 +244,7 @@ class PlayState extends FlxState
 				balaenemiga.kill();
 				estructuritas.remove(estructuritas.members[i], true);
 				//FlxG.sound.play(AssetPaths.bloque__ogg);
-				FlxG.sound.play(AssetPaths.bloque__wav);
+				//FlxG.sound.play(AssetPaths.bloque__wav);
 			}
 		}
 	}
@@ -257,7 +258,7 @@ class PlayState extends FlxState
 				nave.disparito.kill();
 				estructuritas.remove(estructuritas.members[i], true);
 				//FlxG.sound.play(AssetPaths.bloque__ogg);
-				FlxG.sound.play(AssetPaths.bloque__wav);
+				//FlxG.sound.play(AssetPaths.bloque__wav);
 			}
 		}
 	}

@@ -65,7 +65,7 @@ class Jugador extends FlxSprite
 		{
 			disparito.reset(x - 2 + width / 2 , y + height / 2);
 			disparito.velocity.y = (Balita.normalVel) *-1;
-			FlxG.sound.play(AssetPaths.Pium__wav);
+			//FlxG.sound.play(AssetPaths.Pium__wav);
 		}
 	}
 

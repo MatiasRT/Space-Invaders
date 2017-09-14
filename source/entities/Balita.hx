@@ -26,6 +26,5 @@ class Balita extends FlxSprite
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		trace(this.alpha + " " + this.color);
 	}
 }
