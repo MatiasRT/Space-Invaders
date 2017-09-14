@@ -32,14 +32,17 @@ class PlayState extends FlxState
 	private var ovnicito:Ovni;
 	private var ganaste:FlxText;
 	private var perdiste:FlxText;
+	private var puntaje:FlxText;
 
 	override public function create():Void
 	{
 		super.create();
 		var comienzoDibujoX : Int = 30;
 		var comienzoDibujoY : Int = 10;
+		FlxG.mouse.visible = false;
 		perdiste = new FlxText(FlxG.width / 2);
 		perdiste.text = "Perdiste wey";
+		puntaje = new FlxText(2, 2, 0, "PUNTAJE", 12);
 		
 		
 		FlxG.camera.bgColor = FlxColor.BLACK;
@@ -60,37 +63,37 @@ class PlayState extends FlxState
 		//Comienzo enemigos
 		for (i in 0...8) 
 		{
-			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY));
-			
-			comienzoDibujoX += 35;
-		}
-		comienzoDibujoX = 30;
-		for (i in 0...8) 
-		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 30));
 			
-			comienzoDibujoX += 35;
+			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 60));
 			
-			comienzoDibujoX += 35;
+			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 90));
 			
-			comienzoDibujoX += 35;
+			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
 			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 120));
 			
-			comienzoDibujoX += 35;
+			comienzoDibujoX += 43;
+		}
+		comienzoDibujoX = 30;
+		for (i in 0...8) 
+		{
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 150));
+			
+			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
 		
@@ -118,17 +121,19 @@ class PlayState extends FlxState
 			
 		}
 		
-		//var r:Int = (grupoEnemigo.length /2);
 		add(balaenemiga);
 		add(grupoEnemigo);
 		add(nave);
 		add(estructuritas);
 		add(ovnicito);
+		add(puntaje);
 	}
 
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		
+		puntaje.text = "PUNTAJE " + enemy.contadorPuntaje;
 		colisionEnemigoNave();
 		//colisionBalaEnemigo();
 		colisionBalaGrupo();
@@ -162,6 +167,7 @@ class PlayState extends FlxState
 			if (FlxG.overlap(grupoEnemigo.members[i], nave.disparito))
 			{
 				grupoEnemigo.remove(grupoEnemigo.members[i], true);
+				enemy.addContador();
 				nave.disparito.kill();
 				//FlxG.sound.play(AssetPaths.muerteenemigo__wav);
 			}
