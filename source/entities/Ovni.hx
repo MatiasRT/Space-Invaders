@@ -16,6 +16,13 @@ class Ovni extends FlxSprite
 	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
+<<<<<<< Updated upstream
+=======
+		makeGraphic(15, 15, FlxColor.WHITE);
+		loadGraphic(AssetPaths.Ovnicito__png);
+		scale.set(2,2);
+		velocity.x = 90;
+>>>>>>> Stashed changes
 		xOriginal = this.x;
 		scale.set(2, 2);
 		updateHitbox();

@@ -54,9 +54,13 @@ class PlayState extends FlxState
 		grupoEnemigo = new FlxTypedGroup<Enemigo>();
 		enemy = new Enemigo(50, 50);
 		estructuritas = new FlxTypedGroup<Estructuras>();
+<<<<<<< Updated upstream
 		ovnicito = new Ovni(140, 100, AssetPaths.OVniiiii__png);
 		FlxG.state.add(ovnicito);
 		ovnicito.kill();
+=======
+		ovnicito = new Ovni();
+>>>>>>> Stashed changes
 		
 		//Comienzo enemigos
 		for (i in 0...8) 
@@ -119,7 +123,7 @@ class PlayState extends FlxState
 		add(grupoEnemigo);
 		add(nave);
 		add(estructuritas);
-		add(ovnicito);
+		//add(ovnicito);
 		add(puntaje);
 	}
 
@@ -132,6 +136,9 @@ class PlayState extends FlxState
 			resultado = true;
 			finJuego();
 		}
+=======
+		OvniRandomXD();
+>>>>>>> Stashed changes
 		colisionEnemigoNave();
 		colisionBalaGrupo();
 		TiroRandomXD();
@@ -145,6 +152,9 @@ class PlayState extends FlxState
 		puntajePantalla();
 		OvniRandomXD();
 		colisionOvni();
+=======
+		paredesOvni();
+>>>>>>> Stashed changes
 	}
 	
 	function colisionEnemigoNave()
@@ -200,6 +210,12 @@ class PlayState extends FlxState
 			var Random = new FlxRandom();
 			
 			ovnirandom = Random.int(0, 300);
+=======
+			ovnicito = new Ovni(10, 30);
+			//ovnicito.y = 50;
+			spawnOvni = false;
+			contadorOvni = 0;
+>>>>>>> Stashed changes
 			
 			if (ovnirandom == 5) 
 			{
@@ -207,6 +223,11 @@ class PlayState extends FlxState
 				add(ovnicito);
 			}
 		}
+<<<<<<< Updated upstream
+=======
+		spawnOvni == false;
+		add(ovnicito);
+>>>>>>> Stashed changes
 	}
 	
 	function colisionOvni()
