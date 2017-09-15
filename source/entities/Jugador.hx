@@ -2,10 +2,10 @@ package entities;
 
 import entities.Balita;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxG;
 import entities.BalaEnemiga;
-import flixel.system.FlxSound;
 
 /**
  * ...
@@ -14,28 +14,35 @@ import flixel.system.FlxSound;
 class Jugador extends FlxSprite
 {
 	public var disparito(get, null):Balita;
+	//public var vidas:Int;
+	//private var grupoVidas:FlxTypedGroup<FlxSprite>;
 
-	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset)
+	public function new(?X:Float=80, ?Y:Float=140, ?SimpleGraphic:FlxGraphicAsset) /*?vidas:Int*/
 	{
 		super(X, Y, SimpleGraphic);
 		
 		loadGraphic(AssetPaths.naveloidenaranjoidexd__png);
 		disparito = new Balita(x, y, AssetPaths.Disparito__png);
 		disparito.kill();
-		FlxG.state.add(disparito);
+		FlxG.state.add(disparito);		
+		//this.vidas = vidas;
+		//grupoVidas = new FlxTypedGroup<FlxSprite>();
 		updateHitbox();
 		
-		
-		
+		//for (i in 0...vidas) 
+		//{
+			//var corazon:FlxSprite = new FlxSprite(50,50,AssetPaths.Vida__png);
+			//grupoVidas.add(corazon);
+		//}
+		//FlxG.state.add(grupoVidas);
 	}
 	
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
 		if (disparito.y < 0)
-		{
 			disparito.kill(); 
-		}
+		
 		movimiento();
 		paredes();
 		disparo();
@@ -44,9 +51,7 @@ class Jugador extends FlxSprite
 	private function movimiento()
 	{
 		if (FlxG.keys.pressed.RIGHT)
-		{
 			x += 3 * 60 * FlxG.elapsed;
-		}
 		if (FlxG.keys.pressed.LEFT)
 			x -= 3 * 60 * FlxG.elapsed;
 	}
@@ -59,13 +64,23 @@ class Jugador extends FlxSprite
 			x = FlxG.width - width;
 	}
 	
+	//public function revivir()
+	//{
+		//vidas--;
+		//if (!alive && vidas != 0) 
+		//{
+			//reset(10, 10);
+			//grupoVidas.members[vidas].destroy();
+		//}
+		//
+	//}
+	
 	function disparo()
 	{
 		if (FlxG.keys.justPressed.SPACE && disparito.alive==false)
 		{
 			disparito.reset(x - 2 + width / 2 , y + height / 2);
 			disparito.velocity.y = (Balita.normalVel) *-1;
-			//FlxG.sound.play(AssetPaths.Pium__wav);
 		}
 	}
 

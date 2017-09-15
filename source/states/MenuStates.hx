@@ -5,7 +5,7 @@ import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import states.PlayState;
-
+import openfl.Lib;
 /**
  * ...
  * @author ...
@@ -41,6 +41,7 @@ class MenuStates extends FlxState
 	
 	private function onExit()
 	{
-		trace("Exit...");
+		Lib.close();
+		trace("GOODBYEEEEEE MOOOOOONMAAAAN!!");
 	}
 }

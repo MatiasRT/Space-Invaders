@@ -11,11 +11,9 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-//import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import lime.graphics.console.RenderState.BlendState;
 import flixel.math.FlxRandom;
-import neko.Random;
 
 class PlayState extends FlxState
 {
@@ -23,16 +21,15 @@ class PlayState extends FlxState
 	private var enemy:Enemigo;
 	private var grupoEnemigo:FlxTypedGroup<Enemigo>;
 	private var balaenemiga(get, null):BalaEnemiga;
-	private var r:Random;
 	private var contadorDisparoEnemigo:Float = 3;
 	private var EnemigoPuedeDisparar:Bool = true;
 	private var contadorOvni:Float = 8;
 	private var spawnOvni:Bool = true;
 	private var estructuritas:FlxTypedGroup<Estructuras>;
-	private var ovnicito:Ovni;
-	private var ganaste:FlxText;
-	private var perdiste:FlxText;
+	private var ovnicito(get, null):Ovni;
 	private var puntaje:FlxText;
+	private var resultado:Bool;
+	private var ovnirandom:Int;
 
 	override public function create():Void
 	{
@@ -40,8 +37,6 @@ class PlayState extends FlxState
 		var comienzoDibujoX : Int = 30;
 		var comienzoDibujoY : Int = 10;
 		FlxG.mouse.visible = false;
-		perdiste = new FlxText(FlxG.width / 2);
-		perdiste.text = "Perdiste wey";
 		puntaje = new FlxText(2, 2, 0, "PUNTAJE", 12);
 		
 		
@@ -58,41 +53,38 @@ class PlayState extends FlxState
 		grupoEnemigo = new FlxTypedGroup<Enemigo>();
 		enemy = new Enemigo(50, 50);
 		estructuritas = new FlxTypedGroup<Estructuras>();
-		ovnicito = new Ovni() ;
+		ovnicito = new Ovni(140, 100, AssetPaths.OVniiiii__png);
+		FlxG.state.add(ovnicito);
+		ovnicito.kill();
 		
 		//Comienzo enemigos
 		for (i in 0...8) 
 		{
-			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 30));
-			
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX - 30, comienzoDibujoY + 30));
 			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
-			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 60));
-			
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX - 30, comienzoDibujoY + 60));
 			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
-			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 90));
-			
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX - 30, comienzoDibujoY + 90));
 			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
-			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 120));
-			
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX - 30, comienzoDibujoY + 120));
 			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
 		for (i in 0...8) 
 		{
-			grupoEnemigo.add(new Enemigo(comienzoDibujoX, comienzoDibujoY + 150));
-			
+			grupoEnemigo.add(new Enemigo(comienzoDibujoX - 30, comienzoDibujoY + 150));
 			comienzoDibujoX += 43;
 		}
 		comienzoDibujoX = 30;
@@ -121,6 +113,7 @@ class PlayState extends FlxState
 			
 		}
 		
+		
 		add(balaenemiga);
 		add(grupoEnemigo);
 		add(nave);
@@ -134,27 +127,28 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		
 		puntaje.text = "PUNTAJE " + enemy.contadorPuntaje;
+		if (grupoEnemigo.length == 0) 
+		{
+			resultado = true;
+			finJuego();
+		}
 		colisionEnemigoNave();
-		//colisionBalaEnemigo();
 		colisionBalaGrupo();
-		//colisiongrupo();
 		TiroRandomXD();
 		colisionbalas();
 		colisionBalaEnemigaNave();
 		fueraBalas();
-		//paredesEnemigos();
 		colisionBalaEnemigaEstructura();
 		colisionBalitaEstructura();
-		//bajaWacho();
 		colisionEnemigoEstructura();
 		colisionBalitaOvni();
 		OvniRandomXD();
-		paredesOvni();
+		colisionOvni();
 	}
 	
 	function colisionEnemigoNave()
 	{
-		if (FlxG.collide(nave,enemy)) 
+		if (FlxG.overlap(nave,enemy)) 
 		{
 			nave.kill();
 		}
@@ -169,7 +163,6 @@ class PlayState extends FlxState
 				grupoEnemigo.remove(grupoEnemigo.members[i], true);
 				enemy.addContador();
 				nave.disparito.kill();
-				//FlxG.sound.play(AssetPaths.muerteenemigo__wav);
 			}
 		}
 	}
@@ -196,27 +189,32 @@ class PlayState extends FlxState
 	
 	function OvniRandomXD()
 	{
-		trace(contadorOvni);
-		contadorOvni += FlxG.elapsed;
-		if (spawnOvni == true && contadorOvni >= 20)
+		if (ovnicito.alive==false) 
 		{
-			ovnicito = new Ovni(FlxG.width + ovnicito.width, FlxG.height/3);
-			//ovnicito.y = 50;
-			spawnOvni = false;
-			contadorOvni = 0;
+			var Random = new FlxRandom();
 			
+			ovnirandom = Random.int(0, 300);
+			
+			if (ovnirandom == 5) 
+			{
+				ovnicito.reset(432, 35);
+				add(ovnicito);
+			}
 		}
-		
-		add(ovnicito);
 	}
 	
-	function paredesOvni()
+	function colisionOvni()
 	{
-		if (ovnicito.x > FlxG.width)
+		if (FlxG.overlap(ovnicito, nave.disparito))
 		{
+			enemy.addContador();
 			ovnicito.kill(); 
-			spawnOvni = true;
 		}
+	}
+	
+	function get_ovnicito():Ovni
+	{
+		return ovnicito;
 	}
 	
 	function get_balaenemiga():BalaEnemiga 
@@ -226,10 +224,20 @@ class PlayState extends FlxState
 	
 	function colisionBalaEnemigaNave()
 	{
-		if (FlxG.collide(nave, balaenemiga)) 
+		if (FlxG.overlap(balaenemiga, nave)) 
 		{
 			nave.kill();
 			balaenemiga.kill();
+			resultado = false;
+			finJuego();
+			
+			
+			//nave.revivir();
+			//if (nave.vidas == 0) 
+			//{
+				//resultado = false;
+				//finJuego();
+			//}
 		}
 	}
 	
@@ -301,72 +309,15 @@ class PlayState extends FlxState
 		}
 	}
 	
-	
-	
-	//Funciones que no funcan - no sirven
-	function paredesEnemigos()
+	function finJuego()
 	{
-		/*for (enemy in grupoEnemigo) 
+		if (resultado == true) 
 		{
-			if (enemy.x < 0)
-				for (enemy in grupoEnemigo) 
-				{
-					enemy.velocity.x = -enemy.velocity.x;
-				}
-			
-			if (enemy.x > (FlxG.width))
-				for (enemy in grupoEnemigo) 
-				{                            
-					enemy.velocity.x = -enemy.velocity.x;
-				}
-			
-		}*/
-		
+			FlxG.switchState(new WinState());
+		}
+		else 
+		{
+			FlxG.switchState(new LoseState());
+		}
 	}
-	/*function colisiongrupo()
-	{
-		if (FlxG.collide(Any. 
-		{
-			enemy.velocity.x = -velocity.x;
-		}	
-	}*/
-	
-	
-
-	/*function bajaWacho()
-	{
-		for (i in 0...grupoEnemigo.members.length) 
-		{
-			if (grupoEnemigo.members[i].x < 0)			
-			{
-				grupoEnemigo.members[i].y += 30;
-				grupoEnemigo.members[i].velocity.x = -(grupoEnemigo.members[i].velocity.x);
-			}
-			if (grupoEnemigo.members[i].x > (FlxG.width - grupoEnemigo.members[i].width))
-			{
-				grupoEnemigo.members[i].velocity.x = -(grupoEnemigo.members[i].velocity.x);
-				grupoEnemigo.members[i].y += 30;
-				
-			}
-		}
-										DE ACA PABAJO NO XD
-		/*if (enemy.x < 0) 
-		{
-			//enemy.y += 30;
-			for (i in 0...grupoEnemigo.members.length) 
-			{
-				grupoEnemigo.members[i].y += 30;
-				//grupoEnemigo.members[1].velocity.x = -grupoEnemigo.members[1].velocity.x;
-				
-			}
-		}
-		if (enemy.x > (FlxG.width - enemy.width))
-		{
-			for (i in 0...grupoEnemigo.members.length) 
-			{
-				grupoEnemigo.members[i].y += 30;
-				//grupoEnemigo.members[1].velocity.x = -grupoEnemigo.members[1].velocity.x;
-			}
-		}
-	}*/
 }

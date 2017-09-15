@@ -19,7 +19,6 @@ class Balita extends FlxSprite
 		super(X, Y, SimpleGraphic);
 		
 		loadGraphic(AssetPaths.Disparito__png);
-		//scale.set(6,6);
 		velocity.y = -800;
 	}
 	

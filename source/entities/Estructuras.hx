@@ -16,7 +16,5 @@ class Estructuras extends FlxSprite
 		super(X, Y, SimpleGraphic);
 		
 		makeGraphic(10, 10, FlxColor.WHITE);
-		
 	}
-	
 }

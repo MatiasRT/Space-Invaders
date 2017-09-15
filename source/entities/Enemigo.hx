@@ -13,19 +13,17 @@ import flixel.math.FlxRandom;
 class Enemigo extends FlxSprite 
 {
 	
-	public var xOriginal:Float;
+	public var xOriginal:Int;
 	
 	public var contadorPuntaje(get, null):Int;
 	
-	public function new(?X:Float=0, ?Y:Float=0, ?SimpleGraphic:FlxGraphicAsset) 
+	public function new(?X:Int=0, ?Y:Int=0, ?SimpleGraphic:FlxGraphicAsset) 
 	{
 		super(X, Y, SimpleGraphic);
-		
 		contadorPuntaje = 0;
-		
 		loadGraphic(AssetPaths.invader2pekenioxd__png);
-		velocity.x = 70;
-		xOriginal = this.x;
+		velocity.x = 30;
+		xOriginal = X;
 	}
 	
 	override public function update(elapsed:Float)
@@ -33,28 +31,19 @@ class Enemigo extends FlxSprite
 		super.update(elapsed);
 		updateHitbox();
 		movimiento();
-		paredes();
 	}
 	
 	function movimiento()
 	{	
-		if (x < FlxG.width -FlxG.width)
-		{
-			x++;
-		}
-	}
-	
-	function paredes()
-	{
-		if (x < 0)
+		if (x <= xOriginal) 
 		{
 			velocity.x = -velocity.x;
-			y += 30;
+			y = y + 30;
 		}
-		
-		if (x > (FlxG.width - width))
-		{	velocity.x = -velocity.x;	
-			y += 30;
+		if (x >= xOriginal + 150) 
+		{
+			velocity.x = -velocity.x;
+			y = y + 30;
 		}
 	}
 	
@@ -67,27 +56,4 @@ class Enemigo extends FlxSprite
 	{
 		return contadorPuntaje;
 	}
-	
-	
-	
-	
-	//function disparo()					// Por Mati
-	//{
-		//if (FlxG.random == true)
-		//disparoEnemigo.reset(x - 2 + width / 2 , y + height / 2);
-		//disparoEnemigo.velocity.y = (Balita.normalVel) *-1;
-		//
-	//}
-	//
-	//function get_disparoEnemigo():Balita
-	//{
-		//return disparoEnemigo;
-	//}
-	
-	/*function disparo()						// Por Andy
-	{
-			disparito.reset(x - 2 + width / 2 , y + height / 2);
-			disparito.velocity.y = (Balita.normalVel) *-1;
-		
-	}*/
 }
