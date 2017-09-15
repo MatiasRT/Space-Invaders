@@ -30,6 +30,7 @@ class PlayState extends FlxState
 	private var puntaje:FlxText;
 	private var resultado:Bool;
 	private var ovnirandom:Int;
+	private var puntos:Int = 0;
 
 	override public function create():Void
 	{
@@ -126,7 +127,6 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		
-		puntaje.text = "PUNTAJE " + enemy.contadorPuntaje;
 		if (grupoEnemigo.length == 0) 
 		{
 			resultado = true;
@@ -142,6 +142,7 @@ class PlayState extends FlxState
 		colisionBalitaEstructura();
 		colisionEnemigoEstructura();
 		colisionBalitaOvni();
+		puntajePantalla();
 		OvniRandomXD();
 		colisionOvni();
 	}
@@ -161,8 +162,12 @@ class PlayState extends FlxState
 			if (FlxG.overlap(grupoEnemigo.members[i], nave.disparito))
 			{
 				grupoEnemigo.remove(grupoEnemigo.members[i], true);
-				enemy.addContador();
+				
+				//enemy.addContador();
+				
 				nave.disparito.kill();
+				
+				contadorPuntajeEnemigo();
 			}
 		}
 	}
@@ -191,6 +196,7 @@ class PlayState extends FlxState
 	{
 		if (ovnicito.alive==false) 
 		{
+			
 			var Random = new FlxRandom();
 			
 			ovnirandom = Random.int(0, 300);
@@ -207,7 +213,6 @@ class PlayState extends FlxState
 	{
 		if (FlxG.overlap(ovnicito, nave.disparito))
 		{
-			enemy.addContador();
 			ovnicito.kill(); 
 		}
 	}
@@ -294,6 +299,8 @@ class PlayState extends FlxState
 	{
 		if (FlxG.overlap(nave.disparito, ovnicito)) 
 		{
+			contadorPuntajeOvni();
+			
 			ovnicito.kill();
 			nave.disparito.kill();
 			spawnOvni = true;
@@ -307,6 +314,21 @@ class PlayState extends FlxState
 			balaenemiga.kill();
 			nave.disparito.kill();
 		}
+	}
+	
+	public function contadorPuntajeEnemigo()
+	{
+		puntos += 100;
+	}
+	
+	public function contadorPuntajeOvni()
+	{
+		puntos += 250;
+	}
+	
+	public function puntajePantalla()
+	{
+		puntaje.text = "PUNTAJE " + puntos;
 	}
 	
 	function finJuego()

@@ -14,10 +14,8 @@ import entities.BalaEnemiga;
 class Jugador extends FlxSprite
 {
 	public var disparito(get, null):Balita;
-	//public var vidas:Int;
-	//private var grupoVidas:FlxTypedGroup<FlxSprite>;
 
-	public function new(?X:Float=80, ?Y:Float=140, ?SimpleGraphic:FlxGraphicAsset) /*?vidas:Int*/
+	public function new(?X:Float=80, ?Y:Float=140, ?SimpleGraphic:FlxGraphicAsset)
 	{
 		super(X, Y, SimpleGraphic);
 		
@@ -25,16 +23,7 @@ class Jugador extends FlxSprite
 		disparito = new Balita(x, y, AssetPaths.Disparito__png);
 		disparito.kill();
 		FlxG.state.add(disparito);		
-		//this.vidas = vidas;
-		//grupoVidas = new FlxTypedGroup<FlxSprite>();
 		updateHitbox();
-		
-		//for (i in 0...vidas) 
-		//{
-			//var corazon:FlxSprite = new FlxSprite(50,50,AssetPaths.Vida__png);
-			//grupoVidas.add(corazon);
-		//}
-		//FlxG.state.add(grupoVidas);
 	}
 	
 	override public function update(elapsed:Float)
@@ -63,17 +52,6 @@ class Jugador extends FlxSprite
 		if (x > (FlxG.width - width))
 			x = FlxG.width - width;
 	}
-	
-	//public function revivir()
-	//{
-		//vidas--;
-		//if (!alive && vidas != 0) 
-		//{
-			//reset(10, 10);
-			//grupoVidas.members[vidas].destroy();
-		//}
-		//
-	//}
 	
 	function disparo()
 	{
